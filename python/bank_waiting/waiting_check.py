@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
 import requests
+import datetime
 import time
 import re
 
@@ -17,13 +18,13 @@ def get_html(url):
         print(e)
         return False
 
-url = '' # Bank URL
+url = 'https://m.place.naver.com/place/34333202/home'
 old = []
 now = []
 
 while True:
     html = get_html(url)
- 
+    now_time = datetime.datetime.now()
     if html != False:
         soup = BeautifulSoup(html, 'html.parser')
         waiting = soup.find_all('td')
@@ -36,6 +37,7 @@ while True:
             for index, value in enumerate(now):
                 try:
                     if value > old[index]:
+                        print(now_time.strftime('%Y-%m-%d %H:%M:%S'))
                         if index == 0:
                             print("General counseling")
                             print("{} -> {} more people".format(old[index], value))
@@ -52,6 +54,7 @@ while True:
                             print("Unknown counseling")
                             print("{} -> {} more people".format(old[index], value))
                     elif value < old[index]:
+                        print(now_time.strftime('%Y-%m-%d %H:%M:%S'))
                         if index == 0:
                             print("General counseling")
                             print("{} -> {} less people".format(old[index], value))
